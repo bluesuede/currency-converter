@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="currencyApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title></title>
+  <link rel="shortcut icon" href="img/">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<!-- Header -->
+
+<!-- Main -->
+
+<div data-ng-controller="baseCurrencyController">
+  <p>Convert from:</p>
+  <p>{{ chosenBase.base }}</p>
+  <input type="search" data-ng-model="baseSearchBar">
+  
+  <ul data-ng-show="baseSearchBar">
+    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><a href="#/{{ currency.abbreviation }}">{{ currency.abbreviation }}</a></li>
+  </ul>
+  
+  <hr>
+  
+  <p>Convert to:</p>
+  <p>{{ convertTo }}</p>
+  <input type="search" data-ng-model="convertToSearchBar">
+  
+  <ul data-ng-show="convertToSearchBar">
+    <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-click="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
+  </ul>
+  
+  <hr>
+  
+  <div data-ng-view=""></div>
+  
+</div>
+
+<!-- Footer -->
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
