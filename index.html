@@ -17,10 +17,10 @@
 
 <div data-ng-controller="baseCurrencyController">
   <p>Convert from:</p>
-  <input type="search" data-ng-model="baseSearchBar" placeholder="{{ chosenBase.base }}">
+  <input type="search" data-ng-model="baseSearchBar" placeholder="{{ chosenBase.base }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
   
-  <ul data-ng-show="baseSearchBar">
-    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-click="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
+  <ul data-ng-show="focusBaseSearch">
+    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
   </ul>
   
   <hr>
@@ -28,10 +28,10 @@
   <hr>
   
   <p>Convert to:</p>
-  <input type="search" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}">
+  <input type="search" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
   
-  <ul data-ng-show="convertToSearchBar">
-    <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-click="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
+  <ul data-ng-show="focusConvertToSearch">
+    <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
   </ul>
   
   <hr>
