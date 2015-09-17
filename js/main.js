@@ -13,7 +13,7 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
     { abbreviation: "CZK", name: "Czech Koruna", country: "Czech Republic" },
     { abbreviation: "DKK", name: "Danish Krone", country: "Denmark" },
     { abbreviation: "EUR", name: "Euro", country: "European Union" },
-    { abbreviation: "GBP", name: "Pound Sterling", country: ["Great Britain", "UK", "England"]},
+    { abbreviation: "GBP", name: "Pound Sterling", country: ["Great Britain", "United Kingdom", "UK", "England"]},
     { abbreviation: "HKD", name: "Hong Kong Dollar", country: "Hong Kong" },
     { abbreviation: "HRK", name: "Croatian Kuna", country: "Croatia" },
     { abbreviation: "HUF", name: "Hungarian Forint", country: "Hungary" },
@@ -37,77 +37,6 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
     { abbreviation: "USD", name: "US Dollar", country: ["USA", "America"] },
     { abbreviation: "ZAR", name: "South African Rand", country: "South Africa" }
   ];
-  
-  /**
-   * Get font awesome icon or return text
-   *
-   * @params string, abbreviation of currency
-   *
-   */
-  $scope.getIcon = function(abbreviation) {
-    var dollar = getIconHtml("USD");
-    
-    switch(abbreviation) {
-      case "AUD":
-        return $sce.trustAsHtml(dollar);
-        break;
-      case "CAD":
-        return $sce.trustAsHtml(dollar);
-        break;
-      case "CNY":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "EUR":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "GBP":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "HKD":
-        return $sce.trustAsHtml(dollar);
-        break;
-      case "ILS":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "INR":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "JPY":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "KRW":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "NZD":
-        return $sce.trustAsHtml(dollar);
-        break;
-      case "RUB":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "SGD":
-        return $sce.trustAsHtml(dollar);
-        break;
-      case "TRY":
-        return $sce.trustAsHtml(getIconHtml(abbreviation));
-        break;
-      case "USD":
-        return $sce.trustAsHtml(dollar);
-        break;
-      default:
-        return $sce.trustAsHtml(abbreviation);
-    }
-    
-  }
-  
-  /**
-   * Helper function for $scope.getIcon
-   *
-   * @params string, currency abbreviation
-   *
-   */
-  getIconHtml = function(abbreviation) {
-    return '<i class="fa fa-' + abbreviation.toLowerCase() + ' fa-1x"></i>'
-  }
    
   
   /**
@@ -128,8 +57,6 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
       
       // Delete text in search field
       $scope.baseSearchBar = "";
-      $scope.getIcon(abbreviation);
-      $scope.baseIcon = $scope.getIcon(abbreviation);
       
       // Information from $scope.currencies about chosen currency, put in to $scope.chosenBaseInfo
       for(var i = 0; i < $scope.currencies.length; i++) {
@@ -169,7 +96,6 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
       // Clear search field
       $scope.convertToSearchBar = "";
       $scope.convertTo = abbreviation;
-      $scope.convertToIcon = $scope.getIcon(abbreviation);
       $scope.changeRate(abbreviation);
     }
   }

@@ -5,10 +5,9 @@
   <meta name="robots" content="index, follow">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <title></title>
+  <title>Currency Converter</title>
   <link rel="shortcut icon" href="img/">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
 
@@ -18,11 +17,10 @@
 
 <div data-ng-controller="baseCurrencyController">
   <p>Convert from:</p>
-  <p>{{ chosenBase.base }}</p>
-  <input type="search" data-ng-model="baseSearchBar">
+  <input type="search" data-ng-model="baseSearchBar" placeholder="{{ chosenBase.base }}">
   
   <ul data-ng-show="baseSearchBar">
-    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-click="changeBaseTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
+    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-click="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
   </ul>
   
   <hr>
@@ -30,8 +28,7 @@
   <hr>
   
   <p>Convert to:</p>
-  <p>{{ convertTo }}</p>
-  <input type="search" data-ng-model="convertToSearchBar">
+  <input type="search" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}">
   
   <ul data-ng-show="convertToSearchBar">
     <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-click="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
@@ -41,7 +38,7 @@
   
   <p data-ng-show="chosenBaseInfo">From: {{ chosenBaseInfo.name }} ({{ chosenBaseInfo.abbreviation }})</p>
   
-  <p data-ng-show="chosenBaseInfo && convertTo"><span ng-bind-html="baseIcon"></span> <input type="text" data-ng-model="amount"> <span data-ng-show="amount && convertTo">Equals <span ng-bind-html="convertToIcon"></span> {{ amount * rate }} with rate {{ rate }}</span></p> 
+  <p data-ng-show="chosenBaseInfo && convertTo">{{ chosenBaseInfo.abbreviation }} <input type="text" data-ng-model="amount"> <span data-ng-show="amount && convertTo">Equals {{ convertTo }} {{ amount * rate }} with rate {{ rate }}</span></p> 
   
 </div>
 
