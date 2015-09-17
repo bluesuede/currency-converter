@@ -1,14 +1,8 @@
-var currencyApp = angular.module('currencyApp', ['ngRoute']);
+var currencyApp = angular.module('currencyApp', []);
 
-currencyApp.config(function($routeProvider) {
-  $routeProvider
-    .when('/', { templateUrl: 'partials/start.html' })
-    .when('/:abbreviation', { templateUrl: 'partials/view.html', controller: 'viewController' })
-    .otherwise({ redirectTo: '/' })
-});
-
-currencyApp.controller('baseCurrencyController', function($scope, $http) {
+currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
   
+  // Information about currencies that can be converted
   $scope.currencies = [
     { abbreviation: "AUD", name: "Australian Dollar", country: "Australia" },
     { abbreviation: "BGN", name: "Bulgarian Lev", country: "Bulgaria" },
@@ -18,6 +12,7 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
     { abbreviation: "CNY", name: "Yuan Renminbi", country: "China" },
     { abbreviation: "CZK", name: "Czech Koruna", country: "Czech Republic" },
     { abbreviation: "DKK", name: "Danish Krone", country: "Denmark" },
+    { abbreviation: "EUR", name: "Euro", country: "European Union" },
     { abbreviation: "GBP", name: "Pound Sterling", country: ["Great Britain", "UK", "England"]},
     { abbreviation: "HKD", name: "Hong Kong Dollar", country: "Hong Kong" },
     { abbreviation: "HRK", name: "Croatian Kuna", country: "Croatia" },
@@ -43,39 +38,98 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
     { abbreviation: "ZAR", name: "South African Rand", country: "South Africa" }
   ];
   
-  $scope.changeChosenBase = function(object) {
-    $scope.chosenBase = object;
-    $scope.baseSearchBar = "";
+  /**
+   * Get font awesome icon or return text
+   *
+   * @params string, abbreviation of currency
+   *
+   */
+  $scope.getIcon = function(abbreviation) {
+    var dollar = getIconHtml("USD");
     
-    if($scope.convertTo) {
-      $scope.changeRate($scope.convertTo);
+    switch(abbreviation) {
+      case "AUD":
+        return $sce.trustAsHtml(dollar);
+        break;
+      case "CAD":
+        return $sce.trustAsHtml(dollar);
+        break;
+      case "CNY":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "EUR":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "GBP":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "HKD":
+        return $sce.trustAsHtml(dollar);
+        break;
+      case "ILS":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "INR":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "JPY":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "KRW":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "NZD":
+        return $sce.trustAsHtml(dollar);
+        break;
+      case "RUB":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "SGD":
+        return $sce.trustAsHtml(dollar);
+        break;
+      case "TRY":
+        return $sce.trustAsHtml(getIconHtml(abbreviation));
+        break;
+      case "USD":
+        return $sce.trustAsHtml(dollar);
+        break;
+      default:
+        return $sce.trustAsHtml(abbreviation);
     }
+    
   }
   
-  $scope.changeConvertTo = function(abbreviation) {
-    if(!$scope.chosenBase) {
-      alert('You need to choose what to convert from first');
-    }
-    else {
-      $scope.convertToSearchBar = "";
-      $scope.convertTo = abbreviation;
-      $scope.changeRate(abbreviation);
-    }
+  /**
+   * Helper function for $scope.getIcon
+   *
+   * @params string, currency abbreviation
+   *
+   */
+  getIconHtml = function(abbreviation) {
+    return '<i class="fa fa-' + abbreviation.toLowerCase() + ' fa-1x"></i>'
   }
+   
   
-  $scope.changeRate = function(abbreviation) {
-    $scope.rate = $scope.chosenBase.rates[abbreviation];
-  }
-  
-});
-
-currencyApp.controller('viewController', function($scope, $http, $routeParams) {
-  
-  $http.get('http://api.fixer.io/latest?base=' + $routeParams.abbreviation + '')
+  /**
+   * Change the base currency
+   * Is used for fetching rates for conversion from API
+   *
+   * @params string
+   *
+   */
+  $scope.changeBaseTo = function(abbreviation) {
+    
+    // Do GET request with abbreviation of currency
+    $http.get('http://api.fixer.io/latest?base=' + abbreviation + '')
     .then(function(response) {
       
-      // Rates from chosen base currency
-      $scope.changeChosenBase(response.data);
+      // Put object with data from API in to scope
+      $scope.chosenBase = response.data;
+      
+      // Delete text in search field
+      $scope.baseSearchBar = "";
+      $scope.getIcon(abbreviation);
+      $scope.baseIcon = $scope.getIcon(abbreviation);
       
       // Information from $scope.currencies about chosen currency, put in to $scope.chosenBaseInfo
       for(var i = 0; i < $scope.currencies.length; i++) {
@@ -84,6 +138,74 @@ currencyApp.controller('viewController', function($scope, $http, $routeParams) {
         }
       }
       
+      // Change rate if there already is a currency to convert to
+      if($scope.convertTo) {
+        $scope.changeRate($scope.convertTo);
+      }
+      // Used for initial load, placed here to be certain all info needed is fetched
+      else {
+        $scope.changeConvertTo("USD");
+        $scope.amount = 100;
+      }
+      
+    }, function(response) {
+      alert("Trouble fetching current rates from API. Try again later.");
     });
+  }
+  
+  /**
+   * Change currency to convert to from the base currency
+   *
+   * @params string
+   *
+   */
+  $scope.changeConvertTo = function(abbreviation) {
     
+    // Display alert message if there is no base currency
+    if(!$scope.chosenBase) {
+      alert('You need to choose what to convert from first');
+    }
+    else {
+      // Clear search field
+      $scope.convertToSearchBar = "";
+      $scope.convertTo = abbreviation;
+      $scope.convertToIcon = $scope.getIcon(abbreviation);
+      $scope.changeRate(abbreviation);
+    }
+  }
+  
+  /**
+   * Change the exchange rate
+   *
+   * @params string
+   *
+   */
+  $scope.changeRate = function(convertToAbbreviation) {
+    
+    // If trying to convert to the same currency rate is 1
+    if(convertToAbbreviation === $scope.chosenBaseInfo.abbreviation) {
+      $scope.rate = 1;
+    }
+    else {
+      $scope.rate = $scope.chosenBase.rates[convertToAbbreviation];
+    }
+  }
+  
+  /**
+   * Reverse the currencies currently in field
+   *
+   * @params string, current base currency
+   * @params string, current convertTo currency
+   *
+   */
+   $scope.reverse = function(baseCurrencyAbbreviation, convertToAbbreviation) {
+     $scope.changeBaseTo(convertToAbbreviation);
+     $scope.changeConvertTo(baseCurrencyAbbreviation);
+   }
+  
+  // Set from EURO to USD if no base currency is set
+  if(!$scope.chosenBase) {
+    $scope.changeBaseTo("EUR");
+  }
+  
 });

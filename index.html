@@ -8,6 +8,7 @@
   <title></title>
   <link rel="shortcut icon" href="img/">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
 
@@ -21,9 +22,11 @@
   <input type="search" data-ng-model="baseSearchBar">
   
   <ul data-ng-show="baseSearchBar">
-    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><a href="#/{{ currency.abbreviation }}">{{ currency.abbreviation }}</a></li>
+    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-click="changeBaseTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
   </ul>
   
+  <hr>
+  <button data-ng-click="reverse(chosenBaseInfo.abbreviation, convertTo)">Reverse</button>  
   <hr>
   
   <p>Convert to:</p>
@@ -36,14 +39,15 @@
   
   <hr>
   
-  <div data-ng-view=""></div>
+  <p data-ng-show="chosenBaseInfo">From: {{ chosenBaseInfo.name }} ({{ chosenBaseInfo.abbreviation }})</p>
+  
+  <p data-ng-show="chosenBaseInfo && convertTo"><span ng-bind-html="baseIcon"></span> <input type="text" data-ng-model="amount"> <span data-ng-show="amount && convertTo">Equals <span ng-bind-html="convertToIcon"></span> {{ amount * rate }} with rate {{ rate }}</span></p> 
   
 </div>
 
 <!-- Footer -->
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.min.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
