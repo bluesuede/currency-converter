@@ -1,0 +1,16 @@
+.choose-currency-element-desktop {
+  display:none;
+}
+
+/*  -------------------------------
+    Media queries
+-------------------------------  */
+@media(min-width:768px) {
+  .choose-currency-element-desktop {
+    display:block;
+  }
+  
+  .choose-currency-element {
+    display:none;
+  }
+}

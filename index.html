@@ -17,9 +17,14 @@
 
 <div data-ng-controller="baseCurrencyController">
   <p>Convert from:</p>
-  <input type="search" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
   
-  <ul data-ng-show="focusBaseSearch">
+  <select data-ng-model="baseSelect" class="choose-currency-element">
+    <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</option>
+  </select>
+  
+  <input type="search" class="choose-currency-element-desktop" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
+  
+  <ul data-ng-show="focusBaseSearch" class="choose-currency-element-desktop">
     <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
   </ul>
   
@@ -28,9 +33,14 @@
   <hr>
   
   <p>Convert to:</p>
-  <input type="search" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
   
-  <ul data-ng-show="focusConvertToSearch">
+  <select data-ng-model="convertToSelect" class="choose-currency-element">
+    <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-mousedown="changeConvertTo(currency.abbreviation);">{{ currency.abbreviation }}</option>
+  </select>
+  
+  <input type="search" class="choose-currency-element-desktop" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
+  
+  <ul data-ng-show="focusConvertToSearch" class="choose-currency-element-desktop">
     <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
   </ul>
   

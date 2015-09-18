@@ -74,6 +74,7 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
     
     // Delete text in search field
     $scope.baseSearchBar = "";
+    $scope.baseSelect = abbreviation;
       
     // Information from $scope.currencies about chosen currency, put in to $scope.chosenBaseInfo
     for(var i = 0; i < $scope.currencies.length; i++) {
@@ -108,6 +109,7 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
     else {
       // Clear search field
       $scope.convertToSearchBar = "";
+      $scope.convertToSelect = abbreviation;
       $scope.convertTo = abbreviation;
       $scope.calculateRate();
     }
