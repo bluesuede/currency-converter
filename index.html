@@ -17,7 +17,7 @@
 
 <div data-ng-controller="baseCurrencyController">
   <p>Convert from:</p>
-  <input type="search" data-ng-model="baseSearchBar" placeholder="{{ chosenBase.base }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
+  <input type="search" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
   
   <ul data-ng-show="focusBaseSearch">
     <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
@@ -38,7 +38,7 @@
   
   <p data-ng-show="chosenBaseInfo">From: {{ chosenBaseInfo.name }} ({{ chosenBaseInfo.abbreviation }})</p>
   
-  <p data-ng-show="chosenBaseInfo && convertTo">{{ chosenBaseInfo.abbreviation }} <input type="text" data-ng-model="amount"> <span data-ng-show="amount && convertTo">Equals {{ convertTo }} {{ amount * rate }} with rate {{ rate }}</span></p> 
+  <p data-ng-show="chosenBaseInfo && convertTo">{{ chosenBaseInfo.abbreviation }} <input type="text" data-ng-model="amount" data-ng-change="calculateRate()"> <span data-ng-show="amount && convertTo">Equals {{ convertTo }} {{ afterConversion }}</span></p> 
   
 </div>
 

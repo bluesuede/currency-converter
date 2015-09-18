@@ -1,6 +1,6 @@
 var currencyApp = angular.module('currencyApp', []);
 
-currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
+currencyApp.controller('baseCurrencyController', function($scope, $http) {
   
   // Information about currencies that can be converted
   $scope.currencies = [
@@ -37,7 +37,31 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
     { abbreviation: "USD", name: "US Dollar", country: ["USA", "America"] },
     { abbreviation: "ZAR", name: "South African Rand", country: "South Africa" }
   ];
-   
+  
+  init = function() {
+    setBaseCurrency();
+  }
+  
+  /**
+   * Set base currency (EURO)
+   * Is used for fetching rates for conversion from API
+   *
+   */
+  setBaseCurrency = function() {
+    // Do GET request with abbreviation of currency
+    $http.get('http://api.fixer.io/latest?base=eur')
+    .then(function(response) {
+      
+      // Put object with rates from API in to scope
+      $scope.euroRates  = response.data.rates;
+      
+      // Set initial base to EUR
+      $scope.changeBaseTo("EUR");
+      
+    }, function(response) {
+      alert("Trouble fetching current rates from API. Try again later.");
+    });
+  }
   
   /**
    * Change the base currency
@@ -48,36 +72,25 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
    */
   $scope.changeBaseTo = function(abbreviation) {
     
-    // Do GET request with abbreviation of currency
-    $http.get('http://api.fixer.io/latest?base=' + abbreviation + '')
-    .then(function(response) {
+    // Delete text in search field
+    $scope.baseSearchBar = "";
       
-      // Put object with data from API in to scope
-      $scope.chosenBase = response.data;
-      
-      // Delete text in search field
-      $scope.baseSearchBar = "";
-      
-      // Information from $scope.currencies about chosen currency, put in to $scope.chosenBaseInfo
-      for(var i = 0; i < $scope.currencies.length; i++) {
-        if($scope.currencies[i].abbreviation === $scope.chosenBase.base) {
-          $scope.chosenBaseInfo = $scope.currencies[i];
-        }
+    // Information from $scope.currencies about chosen currency, put in to $scope.chosenBaseInfo
+    for(var i = 0; i < $scope.currencies.length; i++) {
+      if($scope.currencies[i].abbreviation === abbreviation) {
+        $scope.chosenBaseInfo = $scope.currencies[i];
       }
-      
-      // Change rate if there already is a currency to convert to
-      if($scope.convertTo) {
-        $scope.changeRate($scope.convertTo);
-      }
-      // Used for initial load, placed here to be certain all info needed is fetched
-      else {
-        $scope.changeConvertTo("USD");
-        $scope.amount = 100;
-      }
-      
-    }, function(response) {
-      alert("Trouble fetching current rates from API. Try again later.");
-    });
+    }
+    
+
+    // Used for initial load, placed here to be certain all info needed is fetched
+    if(!$scope.convertTo) {
+      $scope.changeConvertTo("USD");
+      $scope.amount = 100;
+    }
+    
+    $scope.calculateRate();
+    
   }
   
   /**
@@ -89,31 +102,14 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
   $scope.changeConvertTo = function(abbreviation) {
     
     // Display alert message if there is no base currency
-    if(!$scope.chosenBase) {
+    if(!$scope.chosenBaseInfo) {
       alert('You need to choose what to convert from first');
     }
     else {
       // Clear search field
       $scope.convertToSearchBar = "";
       $scope.convertTo = abbreviation;
-      $scope.changeRate(abbreviation);
-    }
-  }
-  
-  /**
-   * Change the exchange rate
-   *
-   * @params string
-   *
-   */
-  $scope.changeRate = function(convertToAbbreviation) {
-    
-    // If trying to convert to the same currency rate is 1
-    if(convertToAbbreviation === $scope.chosenBaseInfo.abbreviation) {
-      $scope.rate = 1;
-    }
-    else {
-      $scope.rate = $scope.chosenBase.rates[convertToAbbreviation];
+      $scope.calculateRate();
     }
   }
   
@@ -124,14 +120,53 @@ currencyApp.controller('baseCurrencyController', function($scope, $http, $sce) {
    * @params string, current convertTo currency
    *
    */
-   $scope.reverse = function(baseCurrencyAbbreviation, convertToAbbreviation) {
+  $scope.reverse = function(baseCurrencyAbbreviation, convertToAbbreviation) {
      $scope.changeBaseTo(convertToAbbreviation);
      $scope.changeConvertTo(baseCurrencyAbbreviation);
    }
   
-  // Set from EURO to USD if no base currency is set
-  if(!$scope.chosenBase) {
-    $scope.changeBaseTo("EUR");
+  /**
+   * Do conversion between two currencies
+   * Changes the $scope.afterConversion variable
+   *
+   */
+  $scope.calculateRate = function() {
+    
+    var floatNumber, baseNumber;
+    
+    // Only do conversion if there is both a base and a convertTo
+    if($scope.chosenBaseInfo && $scope.convertTo) {
+      
+      // If chosen base and convert to is the same, no rate required
+      if($scope.chosenBaseInfo.abbreviation === $scope.convertTo) {
+        $scope.afterConversion = $scope.amount;
+      }
+      // If the chosen base is euro, use simple conversion rates from API object
+      else if($scope.chosenBaseInfo.abbreviation === "EUR" && $scope.convertTo !== "EUR") {
+        floatNumber = $scope.amount * $scope.euroRates[$scope.convertTo];
+        $scope.afterConversion = floatNumber.toFixed(3);
+      }
+      // If the chosen base isnt euro but what wants to convert to euro
+      else if($scope.chosenBaseInfo.abbreviation !== "EUR" && $scope.convertTo === "EUR") {
+        floatNumber = $scope.amount / $scope.euroRates[$scope.chosenBaseInfo.abbreviation];
+        $scope.afterConversion = floatNumber.toFixed(3);
+      }
+      // If neither chosen base or chosen convertTo is euro
+      else if($scope.chosenBaseInfo.abbreviation !== "EUR" && $scope.convertTo !== "EUR") {
+        // First convert amount to euro
+        baseNumber  = $scope.amount / $scope.euroRates[$scope.chosenBaseInfo.abbreviation];
+        // Then convert euro to chosen convertTo rate
+        floatNumber = baseNumber * $scope.euroRates[$scope.convertTo];
+        $scope.afterConversion = floatNumber.toFixed(3);
+      }
+   
+    }
+    else {
+      alert("You need to choose two currencies");
+    }
+    
   }
+  
+  init();
   
 });
