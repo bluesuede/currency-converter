@@ -1,6 +1,228 @@
+* {
+  margin:0;
+  padding:0;
+  font-family:'Lato', sans-serif;
+}
+
 .choose-currency-element-desktop {
   display:none;
 }
+
+#page-wrap {
+  height:100vh;
+  background-color:#594F4F;
+}
+
+option,
+select {
+  font-size:11,5px;
+}
+
+i {
+  color:white;
+}
+
+/*  -------------------------------
+    Header
+-------------------------------  */
+#header {
+  height:15%;
+  display:block;
+  background-color:#413E4A;
+  box-sizing:border-box;
+  text-align:center;
+  color:white;
+}
+
+
+/*  -------------------------------
+    Main
+-------------------------------  */
+.ng-scope {
+  height:75%;
+}
+
+.currency-selections-wrap {
+  display:inline-block;
+  width:100%;
+  height:35%;
+  margin-bottom:-4px;
+}
+
+/* Width of left and right elements */
+.from-currency-choice,
+.to-currency-choice {
+  width:40%;
+}
+
+/* Width of central elements */
+.reverse-button-wrap {
+  width:20%;
+}
+
+.from-currency-choice,
+.reverse-button-wrap,
+.to-currency-choice {
+  height:100%;
+  background-color:#73626E;
+}
+
+.reverse-button {
+  border-radius:50%;
+  height:55px;
+  width:55px;
+  border:none;
+  font-size:11.5px;
+  cursor:pointer;
+  
+  background-color:#594F4F;
+}
+
+  .reverse-button:hover {
+    background-color:#443C3C;
+  }
+
+.choose-currency-element {
+  max-width:90%;
+  padding:0.2em;
+}
+
+/* All six wrappers for the six blocks */
+.from-currency-choice,
+.reverse-button-wrap,
+.to-currency-choice,
+.enter-amount-area,
+.between-area,
+.after-conversion-area {
+  display:inline-block;
+  float:left;
+  text-align:center;
+  
+  white-space:nowrap;
+}
+
+  /* Ghost element for the six blocks (used for vertical centering */
+  #header:before,
+  .from-currency-choice:before,
+  .reverse-button-wrap:before,
+  .to-currency-choice:before,
+  .enter-amount-area:before,
+  .between-area:before,
+  .after-conversion-area:before,
+  .vertical-center-parent:before {
+    content:"";
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+  }
+  
+  .vertical-center-element { /* Class to be used for vertical centering, needs a ghost parent element */
+    display:inline-block;
+    vertical-align:middle;
+  }
+
+.conversion-display-area {
+  display:block;
+  height:35%;
+}
+
+.enter-amount-area,
+.between-area,
+.after-conversion-area {
+  height:100%;
+  background-color:#594F4F;
+  color:white;
+}
+
+.enter-amount-area,
+.after-conversion-area {
+  width:40%;
+}
+
+.between-area {
+  width:20%;
+}
+
+.amount-input {
+  max-width:70px;
+  text-align:center;
+  border-radius:0 2px 2px 0;
+  
+  height:30px;
+  border:none;
+}
+
+.abbreviation-next-to-white-field {
+  display:inline-block;
+  background-color:white;
+  font-size:10px;
+  color:grey;
+  padding:0 3px;
+  box-sizing:border-box;
+  border-right:1px solid grey;
+  
+  border-radius:2px 0 0 2px;
+  height:30px;
+}
+
+.equals-to-sign {
+  display:block;
+  border-radius:50%;
+  height:55px;
+  width:55px;
+  border:none;
+  font-size:40px;
+  font-weight:bold;
+  
+  background-color:#73626E;
+}
+
+.after-conversion-wrapper {
+  max-width:80%;
+}
+
+.after-conversion-span {
+  color:black;
+  background-color:white;
+  height:30px;
+  display:inline-block;
+  font-size:13px;
+  max-width:80%;
+  overflow:hidden;
+  padding:0 3px;
+  box-sizing:border-box;
+  border-radius:0 2px 2px 0;
+}
+
+/* Information area */
+.information-wrap {
+  height:30%;
+  margin:0 auto;
+  max-width:95%;
+  color:white;
+  font-size:12px;
+}
+
+  .information-wrap p {
+    margin:0 0 5px 0;
+  }
+
+/* Footer */
+#footer {
+  height:10%;
+  color:white;
+  font-size:11px;
+  background-color:#413E4A;
+  text-align:center;
+}
+
+  #footer a {
+    color:white;
+  }
+  
+    #footer a:hover {
+      color:#D8D8D8;
+    }
 
 /*  -------------------------------
     Media queries

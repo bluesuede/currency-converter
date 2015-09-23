@@ -8,51 +8,95 @@
   <title>Currency Converter</title>
   <link rel="shortcut icon" href="img/">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
 
-<!-- Header -->
+<div id="page-wrap">
 
-<!-- Main -->
+  <!-- Header -->
+  <header id="header">
+    <h2 class="vertical-center-element">Currency Converter</h1>
+  </header>
+  <!-- Main -->
 
-<div data-ng-controller="baseCurrencyController">
-  <p>Convert from:</p>
+  <div data-ng-controller="baseCurrencyController">
   
-  <select data-ng-model="baseSelect" class="choose-currency-element">
-    <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</option>
-  </select>
+    <div class="currency-selections-wrap">
+      <div class="from-currency-choice">
+        
+        <!-- Used in mobile view -->
+        <select data-ng-model="baseSelect" class="choose-currency-element vertical-center-element">
+          <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }} - {{ currency.name }}</option>
+        </select>
+      
+        <!-- Used in desktop view -->
+        <input type="search" class="choose-currency-element-desktop" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
+        
+        <ul data-ng-show="focusBaseSearch" class="choose-currency-element-desktop">
+          <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
+        </ul>
+        
+      </div>
+      
+      
+      <div class="reverse-button-wrap">
+        <button class="vertical-center-element reverse-button" data-ng-click="reverse(chosenBaseInfo.abbreviation, convertTo)">
+          <i class="fa fa-exchange fa-2x"></i>
+        </button>
+      </div>
+      
+      <div class="to-currency-choice">
+        
+        <!-- Used in mobile view -->
+        <select data-ng-model="convertToSelect" class="choose-currency-element vertical-center-element">
+          <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-mousedown="changeConvertTo(currency.abbreviation);">{{ currency.abbreviation }} - {{ currency.name }}</option>
+        </select>
+        
+        <!-- Used in desktop view -->
+        <input type="search" class="choose-currency-element-desktop" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
+        
+        <ul data-ng-show="focusConvertToSearch" class="choose-currency-element-desktop">
+          <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
+        </ul>
+        
+      </div>
+    </div>
   
-  <input type="search" class="choose-currency-element-desktop" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
-  
-  <ul data-ng-show="focusBaseSearch" class="choose-currency-element-desktop">
-    <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
-  </ul>
-  
-  <hr>
-  <button data-ng-click="reverse(chosenBaseInfo.abbreviation, convertTo)">Reverse</button>  
-  <hr>
-  
-  <p>Convert to:</p>
-  
-  <select data-ng-model="convertToSelect" class="choose-currency-element">
-    <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-mousedown="changeConvertTo(currency.abbreviation);">{{ currency.abbreviation }}</option>
-  </select>
-  
-  <input type="search" class="choose-currency-element-desktop" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
-  
-  <ul data-ng-show="focusConvertToSearch" class="choose-currency-element-desktop">
-    <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
-  </ul>
-  
-  <hr>
-  
-  <p data-ng-show="chosenBaseInfo">From: {{ chosenBaseInfo.name }} ({{ chosenBaseInfo.abbreviation }})</p>
-  
-  <p data-ng-show="chosenBaseInfo && convertTo">{{ chosenBaseInfo.abbreviation }} <input type="text" data-ng-model="amount" data-ng-change="calculateRate()"> <span data-ng-show="amount && convertTo">Equals {{ convertTo }} {{ afterConversion }}</span></p> 
-  
+
+    <div class="conversion-display-area">
+      <div class="enter-amount-area">
+        <div class="vertical-center-element">
+          <p class="vertical-center-parent"><span class="abbreviation-next-to-white-field vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ chosenBaseInfo.abbreviation }}</span></span><input class="amount-input vertical-center-element" type="text" data-ng-model="amount" data-ng-change="calculateRate()"></p>
+        </div>
+      </div>
+      <div class="between-area">
+        <div class="vertical-center-element">
+          <span class="equals-to-sign">=</span>
+        </div>
+      </div>
+      <div class="after-conversion-area">
+        <div class="vertical-center-element after-conversion-wrapper">
+          <p class="vertical-center-parent"><span class="abbreviation-next-to-white-field vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ convertTo }}</span></span><span class="after-conversion-span vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ afterConversion }}</span></span></p>
+        </div> 
+      </div>
+    </div>
+
+    <div class="information-wrap">
+      <p>Converting from {{ chosenBaseInfo.abbreviation }} to {{ convertTo }}.</p>
+      <p>Enter an amount in the left field, the value after conversion will be displayed in the right field.</p>
+      <p>Change which currency to convert to and from at the top.</p>
+    </div>
+    
+  </div>
+
+  <!-- Footer -->
+  <footer id="footer" class="vertical-center-parent">
+    <p class="vertical-center-element">Made by Filip Zalamans | <a href="https://github.com/bluesuede/currency-converter">Github</a> | Using API from <a href="http://fixer.io">fixer.io</a></p>
+  </footer>
+
 </div>
-
-<!-- Footer -->
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
