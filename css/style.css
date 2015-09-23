@@ -10,6 +10,7 @@
 
 #page-wrap {
   height:100vh;
+  position:fixed;
   background-color:#594F4F;
 }
 
