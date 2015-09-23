@@ -42,10 +42,6 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
     setBaseCurrency();
   }
   
-  $scope.testTouchEnd = function($event) {
-    console.log($event);
-  }
-  
   /**
    * Set base currency (EURO)
    * Is used for fetching rates for conversion from API
