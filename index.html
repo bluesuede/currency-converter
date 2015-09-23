@@ -26,12 +26,7 @@
     <div class="currency-selections-wrap">
       <div class="from-currency-choice">
         
-        <!-- Used in mobile view
-        <select data-ng-model="baseSelect" class="choose-currency-element vertical-center-element">
-          <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" data-ng-click="changeBaseTo(currency.abbreviation)">{{ currency.abbreviation }} - {{ currency.name }}</option>
-        </select>
-        -->
-        
+        <!-- Used in mobile view -->
         <select data-ng-model="baseSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeBaseTo(baseSelect)"></select>
       
         <!-- Used in desktop view -->
@@ -52,12 +47,7 @@
       
       <div class="to-currency-choice">
         
-        <!-- Used in mobile view
-        <select data-ng-model="convertToSelect" class="choose-currency-element vertical-center-element">
-          <option data-ng-repeat="currency in currencies" value="{{ currency.abbreviation }}" ng-touchend="changeConvertTo(currency.abbreviation)" data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }} - {{ currency.name }}</option>
-        </select>
-        -->
-        
+        <!-- Used in mobile view -->        
         <select data-ng-model="convertToSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeConvertTo(convertToSelect)"></select>
         
         <!-- Used in desktop view -->
@@ -74,7 +64,7 @@
     <div class="conversion-display-area">
       <div class="enter-amount-area">
         <div class="vertical-center-element">
-          <p class="vertical-center-parent"><span class="abbreviation-next-to-white-field vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ chosenBaseInfo.abbreviation }}</span></span><input class="amount-input vertical-center-element" type="text" data-ng-model="amount" data-ng-change="calculateRate()"></p>
+          <p class="vertical-center-parent"><span class="abbreviation-next-to-white-field vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ chosenBaseInfo.abbreviation }}</span></span><input class="amount-input vertical-center-element" type="number" data-ng-model="amount" data-ng-change="calculateRate()"></p>
         </div>
       </div>
       <div class="between-area">

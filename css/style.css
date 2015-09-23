@@ -22,6 +22,17 @@ i {
   color:white;
 }
 
+/* To remove spinning buttons from number input */
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance:textfield;
+  }
+
 /*  -------------------------------
     Header
 -------------------------------  */
