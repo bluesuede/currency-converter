@@ -1,4 +1,4 @@
-var currencyApp = angular.module('currencyApp', []);
+var currencyApp = angular.module('currencyApp', ['ngTouch']);
 
 currencyApp.controller('baseCurrencyController', function($scope, $http) {
   
@@ -40,6 +40,10 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
   
   init = function() {
     setBaseCurrency();
+  }
+  
+  $scope.testTouchEnd = function($event) {
+    console.log($event);
   }
   
   /**
