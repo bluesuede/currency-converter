@@ -238,6 +238,19 @@ i {
 /*  -------------------------------
     Media queries
 -------------------------------  */
+@media(max-height:400px) {
+  .information-wrap {
+    display:none;
+  }
+  
+  .currency-selections-wrap,
+  .conversion-display-area {
+    height:50%;
+  }
+  
+  
+}
+
 @media(min-width:768px) {
   .choose-currency-element-desktop {
     display:block;
