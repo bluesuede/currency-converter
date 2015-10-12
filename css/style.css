@@ -32,6 +32,24 @@ i {
   input[type=number] {
     -moz-appearance:textfield;
   }
+  
+/*  -------------------------------
+    Helpers
+-------------------------------  */
+
+/* Class to give parent of what you want vertically centered */
+.vertical-center-parent:before {
+  content:"";
+  display:inline-block;
+  height:100%;
+  vertical-align:middle;
+}
+
+/* Class to be used for vertical centering, needs a ghost parent element */
+.vertical-center-element {
+  display:inline-block;
+  vertical-align:middle;
+}
 
 /*  -------------------------------
     Header
@@ -112,26 +130,6 @@ i {
   white-space:nowrap;
 }
 
-  /* Ghost element for the six blocks (used for vertical centering */
-  #header:before,
-  .from-currency-choice:before,
-  .reverse-button-wrap:before,
-  .to-currency-choice:before,
-  .enter-amount-area:before,
-  .between-area:before,
-  .after-conversion-area:before,
-  .vertical-center-parent:before {
-    content:"";
-    display:inline-block;
-    height:100%;
-    vertical-align:middle;
-  }
-  
-  .vertical-center-element { /* Class to be used for vertical centering, needs a ghost parent element */
-    display:inline-block;
-    vertical-align:middle;
-  }
-
 .conversion-display-area {
   display:block;
   height:35%;
@@ -141,7 +139,6 @@ i {
 .between-area,
 .after-conversion-area {
   height:100%;
-  background-color:#594F4F;
   color:white;
 }
 
@@ -194,13 +191,14 @@ i {
 
 .after-conversion-span {
   color:black;
+  padding-left:3px;
   background-color:white;
   height:30px;
   display:inline-block;
   font-size:13px;
+  padding-right:3px;
   max-width:80%;
   overflow:hidden;
-  padding:0 3px;
   box-sizing:border-box;
   border-radius:0 2px 2px 0;
 }
@@ -223,8 +221,8 @@ i {
   height:10%;
   color:white;
   font-size:11px;
-  background-color:#413E4A;
   text-align:center;
+  background-color:#413E4A;
 }
 
   #footer a {
@@ -232,12 +230,15 @@ i {
   }
   
     #footer a:hover {
-      color:#D8D8D8;
+      color:#939393;
     }
 
 /*  -------------------------------
     Media queries
 -------------------------------  */
+
+/*  Triggered when mobile user uses keyboard to enter value
+    Or maybe if there's an unreasably small screen */
 @media(max-height:400px) {
   .information-wrap {
     display:none;
@@ -249,8 +250,11 @@ i {
   }
   
   
+  
+  
 }
 
+/* Desktop mode */
 @media(min-width:768px) {
   .choose-currency-element-desktop {
     display:block;

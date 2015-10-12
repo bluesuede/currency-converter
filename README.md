@@ -1,3 +1,6 @@
+## Still in development
+* Needs styling for desktop view
+
 # Currency converter
 
 Made with AngularJS.

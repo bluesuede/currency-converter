@@ -16,7 +16,7 @@
 <div id="page-wrap">
 
   <!-- Header -->
-  <header id="header">
+  <header id="header" class="vertical-center-parent">
     <h2 class="vertical-center-element">Currency Converter</h1>
   </header>
   <!-- Main -->
@@ -24,55 +24,57 @@
   <div data-ng-controller="baseCurrencyController">
   
     <div class="currency-selections-wrap">
-      <div class="from-currency-choice">
+      <div class="from-currency-choice vertical-center-parent">
         
         <!-- Used in mobile view -->
         <select data-ng-model="baseSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeBaseTo(baseSelect)"></select>
       
-        <!-- Used in desktop view -->
-        <input type="search" class="choose-currency-element-desktop" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
+        <!-- Used in desktop view
+        <input type="search" class="choose-currency-element-desktop vertical-center-element" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
         
         <ul data-ng-show="focusBaseSearch" class="choose-currency-element-desktop">
           <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
         </ul>
+        -->
         
       </div>
       
       
-      <div class="reverse-button-wrap">
+      <div class="reverse-button-wrap vertical-center-parent">
         <button class="vertical-center-element reverse-button" data-ng-click="reverse(chosenBaseInfo.abbreviation, convertTo)">
           <i class="fa fa-exchange fa-2x"></i>
         </button>
       </div>
       
-      <div class="to-currency-choice">
+      <div class="to-currency-choice vertical-center-parent">
         
         <!-- Used in mobile view -->        
         <select data-ng-model="convertToSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeConvertTo(convertToSelect)"></select>
         
-        <!-- Used in desktop view -->
+        <!-- Used in desktop view
         <input type="search" class="choose-currency-element-desktop" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
         
         <ul data-ng-show="focusConvertToSearch" class="choose-currency-element-desktop">
           <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
         </ul>
+        -->
         
       </div>
     </div>
   
 
     <div class="conversion-display-area">
-      <div class="enter-amount-area">
+      <div class="enter-amount-area vertical-center-parent">
         <div class="vertical-center-element">
           <p class="vertical-center-parent"><span class="abbreviation-next-to-white-field vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ chosenBaseInfo.abbreviation }}</span></span><input class="amount-input vertical-center-element" type="number" data-ng-model="amount" data-ng-change="calculateRate()"></p>
         </div>
       </div>
-      <div class="between-area">
+      <div class="between-area vertical-center-parent">
         <div class="vertical-center-element">
           <span class="equals-to-sign">=</span>
         </div>
       </div>
-      <div class="after-conversion-area">
+      <div class="after-conversion-area vertical-center-parent">
         <div class="vertical-center-element after-conversion-wrapper">
           <p class="vertical-center-parent"><span class="abbreviation-next-to-white-field vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ convertTo }}</span></span><span class="after-conversion-span vertical-center-element vertical-center-parent"><span class="vertical-center-element">{{ afterConversion }}</span></span></p>
         </div> 
