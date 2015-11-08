@@ -23,42 +23,42 @@
 
   <div data-ng-controller="baseCurrencyController">
   
-    <div class="currency-selections-wrap">
-      <div class="from-currency-choice vertical-center-parent">
+    <div class="currency-selections-outer-wrap">
+      <div class="currency-selections-wrap">
+        <div class="from-currency-choice vertical-center-parent">
+          
+          <!-- Used in mobile view -->
+          <select data-ng-model="baseSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeBaseTo(baseSelect)"></select>
         
-        <!-- Used in mobile view -->
-        <select data-ng-model="baseSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeBaseTo(baseSelect)"></select>
-      
-        <!-- Used in desktop view
-        <input type="search" class="choose-currency-element-desktop vertical-center-element" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false">
+          <!-- Used in desktop view -->
+          <input type="search" id="from-search-currency" class="choose-currency-element-desktop currency-search vertical-center-element" data-ng-model="baseSearchBar" placeholder="{{ chosenBaseInfo.abbreviation }}" data-ng-focus="focusBaseSearch=true" data-ng-blur="focusBaseSearch=false" data-ng-keypress="searchKeypressAction($event)">
+          
+          <ul data-ng-show="focusBaseSearch" id="from-search-currency-list" class="choose-currency-element-desktop currency-search-list">
+            <li class="currency-search-result" data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
+          </ul>
+          
+        </div>
         
-        <ul data-ng-show="focusBaseSearch" class="choose-currency-element-desktop">
-          <li data-ng-repeat="currency in currencies | filter:baseSearchBar | limitTo: 5"><button data-ng-mousedown="changeBaseTo(currency.abbreviation);">{{ currency.abbreviation }}</button></li>
-        </ul>
-        -->
         
-      </div>
-      
-      
-      <div class="reverse-button-wrap vertical-center-parent">
-        <button class="vertical-center-element reverse-button" data-ng-click="reverse(chosenBaseInfo.abbreviation, convertTo)">
-          <i class="fa fa-exchange fa-2x"></i>
-        </button>
-      </div>
-      
-      <div class="to-currency-choice vertical-center-parent">
+        <div class="reverse-button-wrap vertical-center-parent">
+          <button class="vertical-center-element reverse-button" data-ng-click="reverse(chosenBaseInfo.abbreviation, convertTo)">
+            <i class="fa fa-exchange fa-2x"></i>
+          </button>
+        </div>
         
-        <!-- Used in mobile view -->        
-        <select data-ng-model="convertToSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeConvertTo(convertToSelect)"></select>
-        
-        <!-- Used in desktop view
-        <input type="search" class="choose-currency-element-desktop" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false">
-        
-        <ul data-ng-show="focusConvertToSearch" class="choose-currency-element-desktop">
-          <li data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
-        </ul>
-        -->
-        
+        <div class="to-currency-choice vertical-center-parent">
+          
+          <!-- Used in mobile view -->        
+          <select data-ng-model="convertToSelect" class="choose-currency-element vertical-center-element" data-ng-options="currency.abbreviation as (currency.abbreviation + ' - ' + currency.name) for currency in currencies" data-ng-change="changeConvertTo(convertToSelect)"></select>
+          
+          <!-- Used in desktop view -->
+          <input type="search" id="to-search-currency" class="choose-currency-element-desktop currency-search vertical-center-element" data-ng-model="convertToSearchBar" placeholder="{{ convertTo }}" data-ng-focus="focusConvertToSearch=true" data-ng-blur="focusConvertToSearch=false" data-ng-keypress="searchKeypressAction($event)">
+          
+          <ul data-ng-show="focusConvertToSearch" id="to-search-currency-list" class="choose-currency-element-desktop currency-search-list">
+            <li class="currency-search-result" data-ng-repeat="currency in currencies | filter:convertToSearchBar | limitTo: 5"><button data-ng-mousedown="changeConvertTo(currency.abbreviation)">{{ currency.abbreviation }}</button></li>
+          </ul>
+          
+        </div>
       </div>
     </div>
   
@@ -82,7 +82,7 @@
     </div>
 
     <div class="information-wrap">
-      <p>Converting from {{ chosenBaseInfo.abbreviation }} to {{ convertTo }}.</p>
+      <p>Converting from {{ chosenBaseInfo.abbreviation }} ({{chosenBaseInfo.name }}) to {{ convertTo }} ({{ convertToName }}).</p>
       <p>Enter an amount in the left field, the value after conversion will be displayed in the right field.</p>
       <p>Change which currency to convert to and from at the top.</p>
     </div>

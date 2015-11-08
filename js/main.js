@@ -111,6 +111,14 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
       $scope.convertToSearchBar = "";
       $scope.convertToSelect = abbreviation;
       $scope.convertTo = abbreviation;
+      
+      // Information from $scope.currencies about chosen currency, put in to $scope.convertToName
+      for(var i = 0; i < $scope.currencies.length; i++) {
+        if($scope.currencies[i].abbreviation === abbreviation) {
+          $scope.convertToName = $scope.currencies[i].name;
+        }
+      }
+      
       $scope.calculateRate();
     }
   }
@@ -167,6 +175,53 @@ currencyApp.controller('baseCurrencyController', function($scope, $http) {
       alert("You need to choose two currencies");
     }
     
+  }
+  
+  /**
+   * Set currency to first suggestion when focusing on search text boxes
+   *
+   * @param object, event object
+   *
+   */
+  $scope.searchKeypressAction = function(event) {
+    var fromOrTo,
+        ul,
+        listItems,
+        firstListItem,
+        firstListItemAbbreviation;
+    
+    // If enter key is pressed
+    if(event.keyCode === 13) {
+      // Make id of search field in to string fromOrTo
+      fromOrTo = event.target.id;
+      // Remove last 16 characters of string, remaining will be "to" or "from"
+      fromOrTo = fromOrTo.substring(0, fromOrTo.length - 16);
+      
+      // Get the ul being shown in list under search bar
+      ul = document.getElementById("" + fromOrTo + "-search-currency-list");
+      // Get all list items from ul
+      listItems = ul.getElementsByTagName("li");      
+      // Get the first list of all list items
+      firstListItem = listItems[0];
+      
+      // Get the currency abbreviation from first list item
+      firstListItemAbbreviation = firstListItem.textContent;
+      
+      if(fromOrTo === "from") {
+      
+        // Trigger function $scope.changeBaseTo
+        $scope.changeBaseTo(firstListItemAbbreviation);
+      
+      }
+      else if(fromOrTo === "to") {
+        // Trigger function $scope.changeConvertTo
+        $scope.changeConvertTo(firstListItemAbbreviation);
+      }
+      
+      // Remove focus from search text box so that ul disappears
+      event.target.blur();
+      
+    }
   }
   
   init();
