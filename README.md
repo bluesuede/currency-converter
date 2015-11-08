@@ -1,6 +1,3 @@
-## Still in development
-* Needs styling for desktop view
-
 # Currency converter
 
 Made with AngularJS.
@@ -10,3 +7,7 @@ Made with AngularJS.
 ### Known issues
 
 * Soft keyboard on mobile "squeezes" entire page together
+
+### Tested with
+* Firefox v42.0
+* Chrome v45.0.2454.85
