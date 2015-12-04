@@ -1,6 +1,7 @@
 # Currency converter
 
 Made with AngularJS.
+
 http://bluesuede.github.io/currency-converter/
 
 * Uses API from http://fixer.io/
